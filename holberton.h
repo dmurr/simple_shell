@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #define SHELL_PROMPT "#cash$"
 #define CHAR_BUF_MAX 1024

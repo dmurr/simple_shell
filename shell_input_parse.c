@@ -15,29 +15,44 @@
 /* VERSION 0.1 Only parses on ' '*/
 char **input_parse(char *buffer, char **parsed_input)
 {
-	char *mini_buffer;
-	int i_read, i_copy, j, num = 1;
+	char *p_holder, delim[] = {' ', '\0'};
+	int j = 0;
 
-	while (num)
+        printf("3\n");
+	p_holder = strtok(buffer, delim);
+
+	while (p_holder)
 	{
-		num = next_word(buffer); /*returns number of characters to next word*/
-		mini_buffer = malloc(sizeof(char) * num);
-		if (mini_buffer == NULL)
-		{
-			
-			return (NULL);
-		}
+		parsed_input[j] = p_holder;
+		p_holder = strtok(NULL, delim);
+		printf("j = %d\n", j);
+		j++;
 	}
-
-/*	for (i_read = 0 ; buffer[i] != '\0' && buffer[i] != '\n' ; i++)
-	{
-		/* this loop iterates through buffer
-
-		if (compare against delimiters (struct?)
-			//add word to parsed_input[j]
-			//j++
-			;
-
-			}*/
+	parsed_input[j] = p_holder;
 	return (parsed_input);
+}
+
+int main(void)
+{
+	char *fixed = "hEllo EveRy geNteLmaN", *buffer;
+        char **parsed_input = NULL; /*malloc to max size*/
+	int i;
+
+	buffer = malloc(sizeof(char) * 25);
+        strcpy(buffer, fixed);
+
+	printf("1\n");
+	parsed_input = malloc(sizeof(void *) * 10);
+	if (parsed_input)
+	{
+		printf("2\n");
+		input_parse(buffer, parsed_input);
+	}
+	printf("3\n");
+	for (i = 0 ; parsed_input[i] ; i++)
+	{
+		printf("array[%d]: %s]\n", i, parsed_input[i]);
+	}
+	free(parsed_input);
+	return (0);
 }
