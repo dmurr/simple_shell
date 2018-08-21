@@ -24,6 +24,8 @@ char **input_parse(char *buffer, char **parsed_input)
 	while (p_holder)
 	{
 		parsed_input[j] = p_holder;
+		/* on the last call of strtok, need to figure out how to remove
+		   newline character off the end */
 		p_holder = strtok(NULL, delim);
 		printf("j = %d\n", j);
 		j++;
@@ -32,10 +34,11 @@ char **input_parse(char *buffer, char **parsed_input)
 	return (parsed_input);
 }
 
+/*
 int main(void)
 {
-	char *fixed = "hEllo EveRy geNteLmaN", *buffer;
-        char **parsed_input = NULL; /*malloc to max size*/
+	char *fixed = "/bin/ls -l ./testy/", *buffer;
+        char **parsed_input = NULL;
 	int i;
 
 	buffer = malloc(sizeof(char) * 25);
@@ -51,8 +54,10 @@ int main(void)
 	printf("3\n");
 	for (i = 0 ; parsed_input[i] ; i++)
 	{
-		printf("array[%d]: %s]\n", i, parsed_input[i]);
+		printf("array[%d]: %s\n", i, parsed_input[i]);
 	}
+	printf("%s, %s, %s\n", parsed_input[0], parsed_input[1], parsed_input[2]);
 	free(parsed_input);
 	return (0);
 }
+*/
