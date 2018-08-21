@@ -15,11 +15,11 @@
 
 char **input_get(char *buffer, char **parsed_input)
 {
-	int bytes;
+	size_t size = CHAR_BUF_MAX;
 
-	//might not need the loop if we know sdtin input max
-	//while (bytes = read(stdin, &buffer, 1024)) into buffer
-
-	//parsed_input = input_parse(buffer, parsed_input)
-	//return parsed_input array
+	//Custom getline goes here
+	if (getline(&buffer, &size, stdin) == -1)
+		return (NULL);
+	parsed_input = input_parse(buffer, parsed_input);
+	return (parsed_input)
 }
