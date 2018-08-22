@@ -42,7 +42,7 @@ char **input_get(char *buffer, char **parsed_input)
         return (parsed_input);
 }
 
-void exec_args(char **parsed_input)
+void shell_exec(char **parsed_input)
 {
         pid_t c_id;
         int status;
@@ -55,14 +55,45 @@ void exec_args(char **parsed_input)
         }
         else if (c_id == 0)
         {
-                if(execve(parsed_input[0], parsed_input, NULL) == -1)
+                if (execve(parsed_input[0], parsed_input, NULL) == -1)
                 {
                         perror("Error:");
                         exit(1);
                 }
         }
         else
-                wait(&status);
+		wait(&status);
+}
+
+void shell_help(char **parsed_input)
+{
+        (void) parsed_input;
+        printf("helped\n");
+}
+
+void shell_exit(char **input)
+{
+        int status = 0, i;
+
+
+        if (input[1])
+        {
+                for (i = 0 ; input[1][i] != '\0'; i++)
+                {
+                        if (input[1][i] <= '9' && input[1][i] >= '0')
+                                status = (status * 10) + (input[1][i] - '0');
+                        else
+                        {
+                                perror("Error");
+                                return;
+                        }
+                }
+                exit(status);
+        }
+        else
+        {
+                exit(0);
+        }
 }
 
 /**
@@ -76,12 +107,20 @@ void exec_args(char **parsed_input)
  * Return: 0 on normal termination, -1 on abnormal termination.
  */
 
-int input_exec(char **parsed_input)
+void (*input_exec(char **parsed_input))(char **)
 {
-        //no switch, just execve
-        exec_args(parsed_input);
+        exec array[] = {
+                {"exit", shell_exit},
+                {"help", shell_help},
+                {NULL, shell_exec}
+        };
+        int i = 0;
 
-        return (0);
+        while (array[i].cmd && strcmp(array[i].cmd, parsed_input[0]))
+        {
+                i++;
+	}
+	return(array[i].fun);
 }
 
 
@@ -113,8 +152,10 @@ int main(void)
 		//call parsed_input = input_get(buffer, parsed_input)
 		parsed_input = input_get(buffer, parsed_input);
 		//call input_exec(parsed_input)
-		input_exec(parsed_input);
-	} while (!EOF);
+		input_exec(parsed_input)(parsed_input);
+	} while (EOF);
 	printf("\n");
+	free(buffer);
+	free(parsed_input);
 	return (0);
 }

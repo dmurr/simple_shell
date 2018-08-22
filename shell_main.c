@@ -28,6 +28,8 @@ int shell_main(void)
 		parsed_input = input_get(buffer, parsed_input);
 		input_exec(parsed_input);
 	} while (!EOF);
+	free(buffer);
+	free(parsed_input);
 	printf("\n");
 	return (0);
 }

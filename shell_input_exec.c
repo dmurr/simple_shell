@@ -8,7 +8,7 @@
  * Return: void
  */
 
-void exec_args(char **parsed_input)
+void shell_exec(char **parsed_input)
 {
 	pid_t c_id;
 	int status;
@@ -28,7 +28,37 @@ void exec_args(char **parsed_input)
 		}
 	}
 	else
-		wait(&status);
+	wait(&status);
+}
+
+void shell_help(char **parsed_input)
+{
+        (void) parsed_input;
+	printf("helped\n");
+}
+
+void shell_exit(char **input)
+{
+	int status = 0, i;
+
+	if (input[1])
+	{
+		for (i = 0 ; input[1][i] != '\0'; i++)
+		{
+			if (input[1][i] <= '9' && input[1][i] >= '0')
+				status = (status * 10) + (input[1][i] - '0');
+			else
+			{
+				perror("Error");
+				return;
+			}
+		}
+		exit(status);
+	}
+	else
+	{
+		exit(0);
+	}
 }
 
 /**
@@ -42,9 +72,29 @@ void exec_args(char **parsed_input)
  * Return: 0 on normal termination, -1 on abnormal termination.
  */
 
-int input_exec(char **parsed_input)
+void (*input_exec(char **parsed_input))(char **)
 {
-	exec_args(parsed_input);
+	exec array[] = {
+		{"exit", shell_exit},
+		{"help", shell_help},
+		{NULL, shell_exec}
+	};
+	int i = 0;
+
+	while (array[i].cmd && strcmp(array[i].cmd, parsed_input[0]))
+	{
+		i++;
+	}
+	return(array[i].fun);
+}
+
+/*
+int main()
+{
+	char *parsed_input[] = {"exit", "aaaab", NULL};
+
+	input_exec(parsed_input)(parsed_input);
 
 	return (0);
 }
+*/
