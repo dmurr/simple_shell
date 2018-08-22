@@ -16,5 +16,4 @@ int shell_main(void);
 char **input_get(char *buffer, char **parsed_input);
 
 char **input_parse(char *buffer, char **parsed_input);
-
 #endif /*HOLBERTON_H*/
