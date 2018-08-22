@@ -3,7 +3,7 @@
 /* VERSION 0.1 Only parses on ' '*/
 char **input_parse(char *buffer, char **parsed_input)
 {
-        char *p_holder, delim[] = {' ', '\0'};
+        char *p_holder, delim[] = {' ', '\0'}, new[] = {'\n', '\0'};
         int j = 0;
 
 	p_holder = strtok(buffer, delim);
@@ -14,6 +14,7 @@ char **input_parse(char *buffer, char **parsed_input)
                 p_holder = strtok(NULL, delim);
                 j++;
         }
+	parsed_input[j - 1] = strtok(parsed_input[j - 1], new);
         parsed_input[j] = p_holder;
         return (parsed_input);
 }
@@ -34,9 +35,11 @@ char **input_parse(char *buffer, char **parsed_input)
 char **input_get(char *buffer, char **parsed_input)
 {
 	size_t size = CHAR_BUF_MAX;
+	ssize_t eval;
 
-	if (getline(&buffer, &size, stdin) == -1)
+	if ((eval = getline(&buffer, &size, stdin)) == -1)
 		return (NULL);
+	printf("bytes: %ld\n", eval);
 	//might not need the loop if we know sdtin input max
 	//while (bytes = read(stdin, &buffer, 1024)) into buffer
 

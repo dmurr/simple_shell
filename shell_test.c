@@ -3,7 +3,7 @@
 /* VERSION 0.1 Only parses on ' '*/
 char **input_parse(char *buffer, char **parsed_input)
 {
-        char *p_holder, delim[] = {' ', '\0'};
+        char *p_holder, delim[] = {' ', '\0'}, new[] = {'\n', '\0'};
         int j = 0;
 
         p_holder = strtok(buffer, delim);
@@ -14,6 +14,7 @@ char **input_parse(char *buffer, char **parsed_input)
                 p_holder = strtok(NULL, delim);
                 j++;
         }
+	parsed_input[j - 1] = strtok(parsed_input[j - 1], new);
         parsed_input[j] = p_holder;
         return (parsed_input);
 }
@@ -41,7 +42,7 @@ char **input_get(char *buffer, char **parsed_input)
         return (parsed_input);
 }
 
-void exec_viena(char **parsed_input)
+void exec_args(char **parsed_input)
 {
         pid_t c_id;
         int status;
@@ -78,7 +79,7 @@ void exec_viena(char **parsed_input)
 int input_exec(char **parsed_input)
 {
         //no switch, just execve
-        exec_viena(parsed_input);
+        exec_args(parsed_input);
 
         return (0);
 }
@@ -107,13 +108,13 @@ int main(void)
 
 	do
 	{
-		//print prompt
+		//Change this to write()
 		printf(SHELL_PROMPT);
 		//call parsed_input = input_get(buffer, parsed_input)
 		parsed_input = input_get(buffer, parsed_input);
 		//call input_exec(parsed_input)
-		printf("%s, %s\n", parsed_input[0], parsed_input[1]);
 		input_exec(parsed_input);
-	} while (buffer);
+	} while (!EOF);
+	printf("\n");
 	return (0);
 }

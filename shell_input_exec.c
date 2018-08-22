@@ -1,6 +1,14 @@
 #include "holberton.h"
 
-void exec_viena(char **parsed_input)
+/**
+ * exec_args - forks and executes files in child process
+ *
+ * @parsed_input: string array of arguments to execute
+ *
+ * Return: void
+ */
+
+void exec_args(char **parsed_input)
 {
 	pid_t c_id;
 	int status;
@@ -13,7 +21,7 @@ void exec_viena(char **parsed_input)
 	}
 	else if (c_id == 0)
 	{
-		if(execve(parsed_input[0], parsed_input, NULL) == -1)
+		if (execve(parsed_input[0], parsed_input, NULL) == -1)
 		{
 			perror("Error:");
 			exit(1);
@@ -36,18 +44,7 @@ void exec_viena(char **parsed_input)
 
 int input_exec(char **parsed_input)
 {
-	//no switch, just execve
-	exec_viena(parsed_input);
+	exec_args(parsed_input);
 
 	return (0);
 }
-
-/*
-int main(void)
-{
-	char *parsed_input[] = {"/bin/ls", "-l", "./testy/", NULL};
-
-	input_exec(parsed_input);
-	return (0);
-}
-*/
