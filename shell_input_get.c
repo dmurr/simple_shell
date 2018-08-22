@@ -17,9 +17,9 @@ char **input_get(char *buffer, char **parsed_input)
 {
 	size_t size = CHAR_BUF_MAX;
 
-	//Custom getline goes here
+	/*Custom getline goes here*/
 	if (getline(&buffer, &size, stdin) == -1)
 		return (NULL);
 	parsed_input = input_parse(buffer, parsed_input);
-	return (parsed_input)
+	return (parsed_input);
 }
