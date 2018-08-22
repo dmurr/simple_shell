@@ -1,60 +1,77 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /**
  * _strtok - separates string by token/delim
  * @str:
  * @delim: separation token
  *
- * Description:
+ * Description: Searches string for delimiter and replaces it with a null byte
  *
- * Return: A pointer to to a string of character up until the delimiter
+ * Return: A pointer to first substring.
  */
 char *_strtok(char *str, const char *delim)
 {
-	static char *s;
-	static int idx = 0;
-	int i, j = 0;
+	static char *b;
+	static char *e;
+	int idx = 0;
+	int i, j;
 
 	if (str != NULL)
-	{
-		s = str;
-	}
+		b = str;
+	else
+		b = e;
 
+/* needs to this to escape infinite loop in main on last substring*/
+	if (*b == '\0')
+		return (NULL);
 
-	while (s[idx] != '\0')
+	while (b[idx] != '\0')
 	{
+		j = 0;
 		while (delim[j] != '\0')
 		{
-			printf("Value at delim[%d] = %c\n", j, delim[j]);
-			if (s[idx] == delim[j])
+			if (b[idx] == delim[j])
 			{
-				printf("Value at str[%d] = %c", idx, s[idx]);
-				s[idx] = '\0';
-				return (s);
+				b[idx] = '\0';
+
+				e = &b[idx + 1];
+				//printf("b --> %c\n", b[0]);
+				//printf("e --> %c\n", e[0]);
+				return (b);
 			}
 			j++;
 		}
 		idx++;
 	}
-
-	printf("idx = %d\n", idx);
-	return (s);
+	if (b[idx] == '\0')
+	{
+		e = &b[idx];
+		return (b);
+	}
+	return (NULL);
 }
 
 int main(void)
 {
-	char *string = "Hello Diego Murray";
-	const char delimiter[] = {'o',' ','\0'};
-/*	char *p;*/
+	char *str = "Hello Diego Murray";
+	const char delimiter[] = {' ','\0'};
+	char *buf;
+	char *p;
 
-	printf("First substring: %s \n", _strtok(string, delimiter));
+	buf = malloc(1024 * sizeof(char));
+	if(!str)
+		return (0);
 
-/*	p = _strtok(string, delimiter);
+	strcpy(buf, str);
+
+	p = _strtok(buf, delimiter);
 	while (p != NULL)
 	{
-		printf("%s\n", p);
+		printf("Next substring: %s\n", p);
 		p = _strtok(NULL, delimiter);
-	}*/
+	}
+
 	return (0);
 }
