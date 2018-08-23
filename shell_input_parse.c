@@ -13,7 +13,7 @@
  */
 
 /* VERSION 0.1 Only parses on ' '*/
-char **input_parse(char *buffer, char **parsed_input)
+int input_parse(char *buffer, char **parsed_input)
 {
 	char *p_holder, delim[] = {' ', '\0'}, new[] = {'\n', '\0'};
 	int j = 0;
@@ -26,7 +26,8 @@ char **input_parse(char *buffer, char **parsed_input)
 		p_holder = strtok(NULL, delim);
 		j++;
 	}
+	/* check for newline at [j - 1] */
 	parsed_input[j - 1] = strtok(parsed_input[j - 1], new);
 	parsed_input[j] = p_holder;
-	return (parsed_input);
+	return (0);
 }

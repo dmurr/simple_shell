@@ -7,19 +7,17 @@
  * @parsed_input: array to store string argument array
  *
  * Description: Input main.  Function for handling input and input buffer as
- * well as passing the input buffer to the input_parse() function which returns
- * an array of string arguments.
+ * well as passing the input buffer to the input_parse() function
  *
- * Return: Returns the array of string arguments gotten from input_parse().
+ * Return: 1 or 0
  */
 
-char **input_get(char *buffer, char **parsed_input)
+int input_get(char *buffer, char **parsed_input)
 {
 	size_t size = CHAR_BUF_MAX;
 
-	/*Custom getline goes here*/
 	if (getline(&buffer, &size, stdin) == -1)
-		return (NULL);
-	parsed_input = input_parse(buffer, parsed_input);
-	return (parsed_input);
+		return (1);
+	input_parse(buffer, parsed_input);
+	return (0);
 }

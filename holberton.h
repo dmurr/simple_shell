@@ -27,14 +27,16 @@ typedef struct select
 
 int shell_main(void);
 
-char **input_get(char *buffer, char **parsed_input);
+int input_get(char *buffer, char **parsed_input);
 
-char **input_parse(char *buffer, char **parsed_input);
+int input_parse(char *buffer, char **parsed_input);
 
 void (*input_exec(char **parsed_input))(char **);
 
-void shell_exec(char **parsed_input);
+void shell_exec(char **input);
 
-int _atoi(char *s);
+void shell_exit(char **input);
+
+void shell_help(char **input);
 
 #endif /*HOLBERTON_H*/

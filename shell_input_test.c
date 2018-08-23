@@ -60,6 +60,8 @@ int main(void)
         if(!(parsed_input = malloc(sizeof(void *) * 20)))
                 return (-1);
 
+	while (EOF)
+	{
 	printf(SHELL_PROMPT);
 	input_get(buffer, parsed_input);
 
@@ -68,6 +70,7 @@ int main(void)
                 printf("array[%d]: %s\n", i, parsed_input[i]);
         }
 	printf("%s, %s, %s, %s\n", parsed_input[0], parsed_input[1], parsed_input[2], parsed_input[3]);
+	}
         free(parsed_input);
 	free(buffer);
 	return (0);

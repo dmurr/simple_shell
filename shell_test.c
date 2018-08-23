@@ -1,12 +1,12 @@
 #include "holberton.h"
 
 /* VERSION 0.1 Only parses on ' '*/
-char **input_parse(char *buffer, char **parsed_input)
+int input_parse(char *buffer, char **parsed_input)
 {
-        char *p_holder, delim[] = {' ', '\0'}, new[] = {'\n', '\0'};
+        char *p_holder = NULL, delim[] = {' ', '\0'}, new[] = {'\n', '\0'};
         int j = 0;
 
-        p_holder = strtok(buffer, delim);
+	p_holder = strtok(buffer, delim);
 
         while (p_holder)
         {
@@ -14,35 +14,23 @@ char **input_parse(char *buffer, char **parsed_input)
                 p_holder = strtok(NULL, delim);
                 j++;
         }
+	//check for newline on [j-1]
 	parsed_input[j - 1] = strtok(parsed_input[j - 1], new);
-        parsed_input[j] = p_holder;
-        return (parsed_input);
+	parsed_input[j] = p_holder;
+        return (0);
 }
 
-/**
- * input_get - gets input and parses it with the input_parse()
- *
- * @buffer: buffer to store read() input
- * @parsed_input: array to store string argument array
- *
- * Description: Input main.  Function for handling input and input buffer as
- * well as passing the input buffer to the input_parse() function which returns
- * an array of string arguments.
- *
- * Return: Returns the array of string arguments gotten from input_parse().
- */
-
-char **input_get(char *buffer, char **parsed_input)
+int input_get(char *buffer, char **parsed_input)
 {
         size_t size = CHAR_BUF_MAX;
 
         if (getline(&buffer, &size, stdin) == -1)
-                return (NULL);
-        parsed_input = input_parse(buffer, parsed_input);
-        return (parsed_input);
+                return (1);
+        input_parse(buffer, parsed_input);
+        return (0);
 }
 
-void shell_exec(char **parsed_input)
+void shell_exec(char **input)
 {
         pid_t c_id;
         int status;
@@ -55,19 +43,19 @@ void shell_exec(char **parsed_input)
         }
         else if (c_id == 0)
         {
-                if (execve(parsed_input[0], parsed_input, NULL) == -1)
-                {
-                        perror("Error:");
-                        exit(1);
-                }
-        }
-        else
+		if (execve(input[0], input, NULL) == -1)
+		{
+			perror("Error:");
+			exit(1);
+		}
+	}
+	else
 		wait(&status);
 }
 
-void shell_help(char **parsed_input)
+void shell_help(char **input)
 {
-        (void) parsed_input;
+        (void) input;
         printf("helped\n");
 }
 
@@ -96,18 +84,7 @@ void shell_exit(char **input)
         }
 }
 
-/**
- * input_exec - calls functions based on passed string array
- *
- * @parsed_input: string array of arguments
- *
- * Description: Execute main.  This function looks at the first values of the
- * array and uses a switch (for now) to determine what function to call.
- *
- * Return: 0 on normal termination, -1 on abnormal termination.
- */
-
-void (*input_exec(char **parsed_input))(char **)
+void (*input_exec(char **input))(char **)
 {
         exec array[] = {
                 {"exit", shell_exit},
@@ -116,29 +93,18 @@ void (*input_exec(char **parsed_input))(char **)
         };
         int i = 0;
 
-        while (array[i].cmd && strcmp(array[i].cmd, parsed_input[0]))
-        {
-                i++;
+	while (array[i].cmd && strcmp(array[i].cmd, input[0]))
+	{
+		i++;
 	}
 	return(array[i].fun);
 }
 
-
-/**
- * shell_main - shell main
- *
- * Description: The shell main.  This function contains the loop which prints
- * the shell prompt and handles calling functions for input, output, program
- * execution and some built-ins
- *
- * Return: Returns 0 on normal program termination.  Error functions will handle
- * abnormal function termination.
- */
-
 int main(void)
 {
-	char *buffer;
+	char *buffer, *prompt = SHELL_PROMPT;
 	char **parsed_input = NULL; /*malloc to max size*/
+	int exit;
 
 	if (!(buffer = malloc(sizeof(char) * CHAR_BUF_MAX)))
 		return (-1);
@@ -147,13 +113,14 @@ int main(void)
 
 	do
 	{
-		//Change this to write()
-		printf(SHELL_PROMPT);
-		//call parsed_input = input_get(buffer, parsed_input)
-		parsed_input = input_get(buffer, parsed_input);
-		//call input_exec(parsed_input)
+		write(0, prompt, 7);
+		exit = input_get(buffer, parsed_input);
+		if (exit == 1)
+			break;
 		input_exec(parsed_input)(parsed_input);
-	} while (EOF);
+		if (exit == 2)
+			break;
+	} while (1);
 	printf("\n");
 	free(buffer);
 	free(parsed_input);

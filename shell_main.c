@@ -13,8 +13,9 @@
 
 int shell_main(void)
 {
-	char *buffer;
+	char *buffer, *prompt = SHELL_PROMPT;
 	char **parsed_input = NULL; /*malloc to max size*/
+	int exit;
 
 	buffer = malloc(sizeof(char) * CHAR_BUF_MAX);
 	if (!buffer)
@@ -22,12 +23,17 @@ int shell_main(void)
 	parsed_input = malloc(sizeof(void *) * 20);
 	if (!parsed_input)
 		return (-1);
-	do {
-		/*Change this to write()*/
-		printf(SHELL_PROMPT);
-		parsed_input = input_get(buffer, parsed_input);
+	while (1)
+	{
+
+		write(0, prompt, 7);
+		exit = input_get(buffer, parsed_input);
+		if (exit == 1)
+			break;
 		input_exec(parsed_input);
-	} while (!EOF);
+		if (exit == 2)
+			break;
+	}
 	free(buffer);
 	free(parsed_input);
 	printf("\n");
