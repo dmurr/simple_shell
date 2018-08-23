@@ -20,7 +20,7 @@
  */
 
 typedef struct select
-   {
+{
 	   char *cmd;
 	   void (*fun)();
  } exec;
