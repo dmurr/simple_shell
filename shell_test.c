@@ -63,7 +63,6 @@ void shell_exit(char **input)
 {
         int status = 0, i;
 
-
         if (input[1])
         {
                 for (i = 0 ; input[1][i] != '\0'; i++)
@@ -84,17 +83,18 @@ void shell_exit(char **input)
         }
 }
 
+
+/* environ is not betty compliant. Instead, try using env. */
 extern char **environ;
-char *get_path()
+char *_getenv(const char *name)
 {
-        const char *s = "PATH";
         int i, j = 0;
 
         for (i = 0; environ[i][j] != 0; i++)
         {
                 for (j = 0; j < 4; j++)
                 {
-                        if (s[j] == environ[i][j])
+                        if (name[j] == environ[i][j])
 			{
 				if (j == 3)
 					return (&environ[i][j+2]);
@@ -112,15 +112,12 @@ void process_rel_path(char **parsed_input)
 {
 	char *full_path, *path, *abs_path;
 	char delim[] = {':', '\0'};
-	char **ptr; // shell_exec expects a **ptr... ptr -> abs_path -> /bin/ls
 	int i, j;
-
-	ptr = &abs_path;
 
 	if(!(abs_path = malloc(sizeof(char) * 1024)))
 		return;
 
-	full_path = get_path();
+	full_path = _getenv("PATH");
 
 	path = strtok(full_path, delim);
 	while(path)
@@ -137,10 +134,12 @@ void process_rel_path(char **parsed_input)
 		}
 		abs_path[i] = '\0';
 
-		printf("abs_path = %s\n", abs_path);
 		if (access(abs_path, F_OK) == 0)
-			shell_exec(ptr);
-
+		{
+			parsed_input[0] = abs_path;
+			shell_exec(parsed_input);
+			break;
+		}
 		path = strtok(NULL, delim);
         }
 	free(abs_path);
