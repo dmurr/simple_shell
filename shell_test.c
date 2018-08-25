@@ -1,21 +1,60 @@
 #include "holberton.h"
 
+char *_strtok(char *str, const char *delim)
+{
+        static char *b;
+        static char *e;
+        int idx = 0;
+        int i, j;
+
+        if (str != NULL)
+                b = str;
+        else
+                b = e;
+
+/* needs to this to escape infinite loop in main on last substring*/
+        if (*b == '\0')
+                return (NULL);
+        while (b[idx] != '\0')
+        {
+                j = 0;
+                while (delim[j] != '\0')
+                {
+                        if (b[idx] == delim[j])
+                        {
+                                b[idx] = '\0';
+
+                                e = &b[idx + 1];
+                                return (b);
+                        }
+                        j++;
+                }
+                idx++;
+        }
+        if (b[idx] == '\0')
+        {
+                e = &b[idx];
+                return (b);
+        }
+        return (NULL);
+}
+
 /* VERSION 0.1 Only parses on ' '*/
 int input_parse(char *buffer, char **parsed_input)
 {
         char *p_holder = NULL, delim[] = {' ', '\0'}, new[] = {'\n', '\0'};
         int j = 0;
 
-	p_holder = strtok(buffer, delim);
+	p_holder = _strtok(buffer, delim);
 
         while (p_holder)
         {
                 parsed_input[j] = p_holder;
-                p_holder = strtok(NULL, delim);
+                p_holder = _strtok(NULL, delim);
                 j++;
         }
 	//check for newline on [j-1]
-	parsed_input[j - 1] = strtok(parsed_input[j - 1], new);
+	parsed_input[j - 1] = _strtok(parsed_input[j - 1], new);
 	parsed_input[j] = p_holder;
         return (0);
 }
@@ -83,8 +122,7 @@ void shell_exit(char **input)
         }
 }
 
-
-/* environ is not betty compliant. Instead, try using env. */
+/* use env */
 extern char **environ;
 char *_getenv(const char *name)
 {
@@ -97,7 +135,7 @@ char *_getenv(const char *name)
                         if (name[j] == environ[i][j])
 			{
 				if (j == 3)
-					return (&environ[i][j+2]);
+					return (&environ[i][j + 2]);
 
 				continue;
 			}
@@ -119,7 +157,7 @@ void process_rel_path(char **parsed_input)
 
 	full_path = _getenv("PATH");
 
-	path = strtok(full_path, delim);
+	path = _strtok(full_path, delim);
 	while(path)
 	{
 		for(i = 0; path[i] != '\0'; i++)
@@ -140,7 +178,7 @@ void process_rel_path(char **parsed_input)
 			shell_exec(parsed_input);
 			break;
 		}
-		path = strtok(NULL, delim);
+		path = _strtok(NULL, delim);
         }
 	free(abs_path);
 }
@@ -169,7 +207,8 @@ void (*input_exec(char **input))(char **)
 	return(array[i].fun);
 }
 
-int main(void)
+/* limited by scope with third parameter *envp[] */
+int main(int argc, char *argv[])
 {
 	char *buffer, *prompt = SHELL_PROMPT;
 	char **parsed_input = NULL; /*malloc to max size*/
