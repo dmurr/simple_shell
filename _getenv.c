@@ -1,19 +1,18 @@
 #include "holberton.h"
 
-extern char **environ;
 char *_getenv(struct shell cash)
 {
 	const char *s = "PATH";
         int i, j = 0;
 
-        for (i = 0; environ[i][j] != 0; i++)
+        for (i = 0; cash.env[i][j] != 0; i++)
         {
 		for (j = 0; j < 4; j++)
 		{
-			if (s[j] == environ[i][j])
+			if (s[j] == cash.env[i][j])
 			{
 				if (j == 3)
-					return(&environ[i][j+2]);
+					return(&(cash.env)[i][j+2]);
 
 				continue;
 			}
