@@ -6,7 +6,8 @@ void shell_error(struct shell cash, int error)
 	int buf_len = 0;
 
 	/* Need to initialize malloc memory to 0 */
-	e_buf = malloc(sizeof(char) * CHAR_BUF_MAX);
+/*	e_buf = malloc(sizeof(char) * CHAR_BUF_MAX); */
+	e_buf = _calloc(CHAR_BUF_MAX, sizeof(char));
 	if (e_buf == NULL)
 		exit(1);
 
