@@ -13,21 +13,21 @@
  */
 
 /* VERSION 0.1 Only parses on ' '*/
-int input_parse(char *buffer, char **parsed_input)
+int input_parse(struct shell cash)
 {
 	char *p_holder, delim[] = {' ', '\0'}, new[] = {'\n', '\0'};
 	int j = 0;
 
-	p_holder = strtok(buffer, delim);
+	p_holder = strtok(cash.i_buf, delim);
 
 	while (p_holder)
 	{
-		parsed_input[j] = p_holder;
+		(cash.p_buf)[j] = p_holder;
 		p_holder = strtok(NULL, delim);
 		j++;
 	}
 	/* check for newline at [j - 1] */
-	parsed_input[j - 1] = strtok(parsed_input[j - 1], new);
-	parsed_input[j] = p_holder;
+	(cash.p_buf)[j - 1] = strtok((cash.p_buf)[j - 1], new);
+	(cash.p_buf)[j] = p_holder;
 	return (0);
 }
