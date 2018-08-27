@@ -1,6 +1,5 @@
 #include "holberton.h"
 
-/* fuck wit env later*/
 extern char **environ;
 char *_getenv(struct shell cash)
 {
