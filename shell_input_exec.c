@@ -30,7 +30,7 @@ void shell_exec(struct shell cash)
 		}
 	}
 	else
-	wait(&status);
+		wait(&status);
 }
 
 /**
@@ -108,7 +108,7 @@ void (*input_exec(struct shell cash))(struct shell)
 	exec array[] = {
 		{"exit", shell_exit},
 		{"env", shell_env},
-		{NULL, shell_exec}
+		{NULL, direct_path}
 	};
 	int i = 0;
 

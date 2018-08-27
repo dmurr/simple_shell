@@ -1,10 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "holberton.h"
 
 /**
  * _strtok - separates string by token/delim
- * @str:
+ * @str: string to tokenize
  * @delim: separation token
  *
  * Description: Searches string for delimiter and replaces it with a null byte
@@ -13,7 +11,7 @@
  */
 char *_strtok(char *str, const char *delim)
 {
-	static char *b;
+	char *b;
 	static char *e;
 	int idx = 0;
 	int i, j;
@@ -23,7 +21,6 @@ char *_strtok(char *str, const char *delim)
 	else
 		b = e;
 
-/* needs to this to escape infinite loop in main on last substring*/
 	if (*b == '\0')
 		return (NULL);
 
@@ -37,8 +34,6 @@ char *_strtok(char *str, const char *delim)
 				b[idx] = '\0';
 
 				e = &b[idx + 1];
-				//printf("b --> %c\n", b[0]);
-				//printf("e --> %c\n", e[0]);
 				return (b);
 			}
 			j++;
@@ -52,26 +47,24 @@ char *_strtok(char *str, const char *delim)
 	}
 	return (NULL);
 }
-
+/*
 int main(void)
 {
-	char *str = "Hello Diego Murray";
-	const char delimiter[] = {' ','\0'};
-	char *buf;
-	char *p;
+	char *str, *something;
+	const char delim[] = {' ', '\0'};
 
-	buf = malloc(1024 * sizeof(char));
-	if(!str)
-		return (0);
+	if(!(str = malloc(sizeof(char) * 1024)))
+                return;
 
-	strcpy(buf, str);
+	str = strdup("Hello World Something Else");
 
-	p = _strtok(buf, delimiter);
-	while (p != NULL)
+	something = _strtok(str, delim);
+	while (something)
 	{
-		printf("Next substring: %s\n", p);
-		p = _strtok(NULL, delimiter);
+		printf("%s", something);
+		something = _strtok(NULL,delim);
+		printf("\n");
 	}
-
 	return (0);
 }
+*/

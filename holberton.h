@@ -69,4 +69,12 @@ void shell_env(struct shell cash);
 
 void shell_error(struct shell cash, int error);
 
+void process_rel_path(struct shell cash);
+
+char *_getenv(struct shell cash);
+
+void direct_path(struct shell cash);
+
+char *_strtok(char *str, const char *delim);
+
 #endif /*HOLBERTON_H*/
