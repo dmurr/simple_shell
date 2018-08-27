@@ -12,6 +12,28 @@
 #define CHAR_BUF_MAX 1024
 
 /**
+ * struct shell - struct for holding relevant variables related to the
+ * functioning of the simple shell program
+ *
+ * @i_buf: input buffer for shell input
+ * @p_buf: parsed string array for parsed input
+ * @_env: parsed string array for environment variables
+ * @name: argv[0] value for each shell call
+ * @count: counter of number of loops shell main has initiated
+ * @exit: used to trigger exit conditions
+ */
+
+typedef struct shell
+{
+	char *i_buf;
+	char **p_buf;
+	char **env;
+	char *name;
+	int count;
+	int exit;
+} shell;
+
+/**
  * struct select - struct for selecting which operation to perform
  * on input string array
  *
@@ -25,18 +47,26 @@ typedef struct select
 	void (*fun)();
 } exec;
 
-int shell_main(void);
+int _strlen(char *s);
 
-int input_get(char *buffer, char **parsed_input);
+int _strcmp(char *s1, char *s2);
 
-int input_parse(char *buffer, char **parsed_input);
+char *_strcat(char *dest, char *src);
 
-void (*input_exec(char **parsed_input))(char **);
+char *int_arg(int input);
 
-void shell_exec(char **input);
+int input_get(struct shell cash);
 
-void shell_exit(char **input);
+int input_parse(struct shell cash);
 
-void shell_help(char **input);
+void (*input_exec(struct shell cash))(struct shell);
+
+void shell_exec(struct shell cash);
+
+void shell_exit(struct shell cash);
+
+void shell_env(struct shell cash);
+
+void shell_error(struct shell cash, int error);
 
 #endif /*HOLBERTON_H*/

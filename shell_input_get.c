@@ -12,12 +12,12 @@
  * Return: 1 or 0
  */
 
-int input_get(char *buffer, char **parsed_input)
+int input_get(struct shell cash)
 {
 	size_t size = CHAR_BUF_MAX;
 
-	if (getline(&buffer, &size, stdin) == -1)
+	if (getline(&(cash.i_buf), &size, stdin) == -1)
 		return (1);
-	input_parse(buffer, parsed_input);
+	input_parse(cash);
 	return (0);
 }

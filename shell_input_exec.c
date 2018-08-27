@@ -1,14 +1,14 @@
 #include "holberton.h"
 
 /**
- * exec_args - forks and executes files in child process
+ * shell_exec - forks and executes files in child process
  *
- * @parsed_input: string array of arguments to execute
+ * @cash: Shell variable struct
  *
  * Return: void
  */
 
-void shell_exec(char **parsed_input)
+void shell_exec(struct shell cash)
 {
 	pid_t c_id;
 	int status;
@@ -21,9 +21,11 @@ void shell_exec(char **parsed_input)
 	}
 	else if (c_id == 0)
 	{
-		if (execve(parsed_input[0], parsed_input, NULL) == -1)
+		if (execve((cash.p_buf)[0], cash.p_buf, NULL) == -1)
 		{
-			perror("Error:");
+			shell_error(cash, 1);
+			free(cash.i_buf);
+			free(cash.p_buf);
 			exit(1);
 		}
 	}
@@ -31,32 +33,60 @@ void shell_exec(char **parsed_input)
 	wait(&status);
 }
 
-void shell_help(char **parsed_input)
+/**
+ * shell_env - prints environment
+ *
+ * Return: void
+ */
+
+void shell_env(struct shell cash)
 {
-        (void) parsed_input;
-	printf("helped\n");
+	char *buf, new[] = {'\n', '\0'};
+	int i = 0;
+
+	for ( ; (buf =  cash.env[i]) != NULL ; i++)
+	{
+		write(0, buf, _strlen(buf));
+		write(0, new, 1);
+	}
 }
 
-void shell_exit(char **input)
-{
-	int status = 0, i;
 
-	if (input[1])
+/**
+ * shell_exit - exits shell with exit code upon invocation
+ *
+ * @cash: Shell variable struct
+ *
+ * Return: void
+ */
+
+void shell_exit(struct shell cash)
+{
+	int stat = 0, i;
+
+	if ((cash.p_buf)[1])
 	{
-		for (i = 0 ; input[1][i] != '\0'; i++)
+		for (i = 0 ; (cash.p_buf)[1][i] != '\0'; i++)
 		{
-			if (input[1][i] <= '9' && input[1][i] >= '0')
-				status = (status * 10) + (input[1][i] - '0');
+			if ((cash.p_buf)[1][i] <= '9' &&
+			    (cash.p_buf)[1][i] >= '0')
+			{
+				stat = (stat * 10) + ((cash.p_buf)[1][i] - '0');
+			}
 			else
 			{
-				perror("Error");
+				shell_error(cash, 2);
 				return;
 			}
 		}
-		exit(status);
+		free(cash.i_buf);
+		free(cash.p_buf);
+		exit(stat);
 	}
 	else
 	{
+		free(cash.i_buf);
+		free(cash.p_buf);
 		exit(0);
 	}
 }
@@ -64,37 +94,27 @@ void shell_exit(char **input)
 /**
  * input_exec - calls functions based on passed string array
  *
- * @parsed_input: string array of arguments
+ * @cash: Shell variable struct
  *
  * Description: Execute main.  This function looks at the first values of the
- * array and uses a switch (for now) to determine what function to call.
+ * array and uses a switch (for now) to determine what function pointer
+ * to return.
  *
- * Return: 0 on normal termination, -1 on abnormal termination.
+ * Return: pointer to function
  */
 
-void (*input_exec(char **parsed_input))(char **)
+void (*input_exec(struct shell cash))(struct shell)
 {
 	exec array[] = {
 		{"exit", shell_exit},
-		{"help", shell_help},
+		{"env", shell_env},
 		{NULL, shell_exec}
 	};
 	int i = 0;
 
-	while (array[i].cmd && strcmp(array[i].cmd, parsed_input[0]))
+	while (array[i].cmd && _strcmp(array[i].cmd, (cash.p_buf)[0]))
 	{
 		i++;
 	}
 	return(array[i].fun);
 }
-
-/*
-int main()
-{
-	char *parsed_input[] = {"exit", "aaaab", NULL};
-
-	input_exec(parsed_input)(parsed_input);
-
-	return (0);
-}
-*/
