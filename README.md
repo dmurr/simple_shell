@@ -1,9 +1,9 @@
 # Simple Shell
 ### Description
-This project is a recreation of the shell command line interpreter..
+This project is a recreation of the shell command line interpreter.
 ### Overview
 This version of the shell has a collection of custom built-in commands along
-with the functionality of running scripts stored in various paths.
+with the functionality of running scripts from various paths.
 
 ## Repo Contents
 
@@ -18,7 +18,7 @@ with the functionality of running scripts stored in various paths.
 |  `direct_path.c`  | Determines if path is relative or absolute   |
 |  `shell_input_exec.c`	     |  Executes absolute path of command  |
 |  `rel_path.c`  | Converts relative path to absolute path	  |
-|  `_strtok.c  | Custom strtok function  |
+|  `_strtok.c`  | Custom strtok function  |
 |  `_getenv.c`  | Gets PATH from environment variables  |
 
 
