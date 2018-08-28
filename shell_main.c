@@ -1,9 +1,9 @@
 #include "holberton.h"
 
 /**
- * shell_main - shell main
+ * main - The shell main
  *
- * Description: The shell main.  This function contains the loop which prints
+ * Description: This function contains the loop which prints
  * the shell prompt and handles calling functions for input, output, program
  * execution and some built-ins
  *
@@ -22,6 +22,8 @@ int main(int argc __attribute__((unused)), char *argv[], char **env)
 		NULL, /* p_buf */
 		NULL, /* _env */
 		NULL, /* name */
+		NULL, /* rel */
+		0, /* exec */
 		0, /* count */
 		0 /* exit */
 	};

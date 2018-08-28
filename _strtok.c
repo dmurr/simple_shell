@@ -47,24 +47,3 @@ char *_strtok(char *str, const char *delim)
 	}
 	return (NULL);
 }
-/*
-int main(void)
-{
-	char *str, *something;
-	const char delim[] = {' ', '\0'};
-
-	if(!(str = malloc(sizeof(char) * 1024)))
-                return;
-
-	str = strdup("Hello World Something Else");
-
-	something = _strtok(str, delim);
-	while (something)
-	{
-		printf("%s", something);
-		something = _strtok(NULL,delim);
-		printf("\n");
-	}
-	return (0);
-}
-*/

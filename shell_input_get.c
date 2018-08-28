@@ -3,8 +3,7 @@
 /**
  * input_get - gets input and parses it with the input_parse()
  *
- * @buffer: buffer to store read() input
- * @parsed_input: array to store string argument array
+ * @cash: Shell variable struct
  *
  * Description: Input main.  Function for handling input and input buffer as
  * well as passing the input buffer to the input_parse() function

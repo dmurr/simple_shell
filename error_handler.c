@@ -1,5 +1,11 @@
 #include "holberton.h"
 
+/**
+ * shell_error - handles printing error messages
+ * @cash: main struct
+ * @error: specifies type of error
+ *
+ */
 void shell_error(struct shell cash, int error)
 {
 	char *e_buf, colon[] = {':', ' ', '\0'}, new[] = {'\n', '\0'}, *count;
@@ -17,7 +23,7 @@ void shell_error(struct shell cash, int error)
 	_strcat(e_buf, colon);
 	_strcat(e_buf, (cash.p_buf)[0]);
 	_strcat(e_buf, colon);
-	switch(error)
+	switch (error)
 	{
 	case 1:
 		_strcat(e_buf, "not found\n");
@@ -27,6 +33,10 @@ void shell_error(struct shell cash, int error)
 		_strcat(e_buf, "Illegal number: ");
 		_strcat(e_buf, (cash.p_buf)[1]);
 		_strcat(e_buf, new);
+		write(1, e_buf, _strlen(e_buf));
+		break;
+	case 3:
+		_strcat(e_buf, "Permission denied\n");
 		write(1, e_buf, _strlen(e_buf));
 		break;
 	}
