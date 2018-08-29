@@ -17,8 +17,10 @@
  *
  * @i_buf: input buffer for shell input
  * @p_buf: parsed string array for parsed input
- * @_env: parsed string array for environment variables
+ * @env: parsed string array for environment variables
  * @name: argv[0] value for each shell call
+ * @rel: stores absolute path when found for relative arguments
+ * @exec: if executable is found
  * @count: counter of number of loops shell main has initiated
  * @exit: used to trigger exit conditions
  */
@@ -29,6 +31,8 @@ typedef struct shell
 	char **p_buf;
 	char **env;
 	char *name;
+	char *rel;
+	int exec;
 	int count;
 	int exit;
 } shell;
