@@ -14,36 +14,48 @@ char *_strtok(char *str, const char *delim)
 	char *b;
 	static char *e;
 	int idx = 0;
-	int i, j;
+	int j, i = 0;
+	char *sub;
+
+	sub = malloc(sizeof(char) * 1024);
 
 	if (str != NULL)
 		b = str;
 	else
 		b = e;
 
-	if (*b == '\0')
-		return (NULL);
+	while (b[idx] == ' ')
+	{
+		printf("5");
+		*b++;
+	}
 
+	if (*b == '\0')
+	{
+		printf("4");
+		return (NULL);
+	}
 	while (b[idx] != '\0')
 	{
 		j = 0;
 		while (delim[j] != '\0')
 		{
-			if (b[idx] == delim[j])
+			if (b[idx] != delim[j])
 			{
-				b[idx] = '\0';
+				sub[idx] = b[idx];
+			}
+			else
+			{
+				sub[idx] = '\0';
 
 				e = &b[idx + 1];
-				return (b);
+				free(sub);
+				printf("2");
+				return (sub);
 			}
 			j++;
 		}
 		idx++;
-	}
-	if (b[idx] == '\0')
-	{
-		e = &b[idx];
-		return (b);
 	}
 	return (NULL);
 }
