@@ -11,51 +11,64 @@
  */
 char *_strtok(char *str, const char *delim)
 {
-	char *b;
+	char *b = NULL;
 	static char *e;
 	int idx = 0;
-	int j, i = 0;
-	char *sub;
-
-	sub = malloc(sizeof(char) * 1024);
+	int j;
 
 	if (str != NULL)
 		b = str;
 	else
 		b = e;
 
-	while (b[idx] == ' ')
-	{
-		printf("5");
-		*b++;
-	}
-
 	if (*b == '\0')
-	{
-		printf("4");
 		return (NULL);
-	}
+
+	b += _strspn(b, delim);
+
 	while (b[idx] != '\0')
 	{
 		j = 0;
 		while (delim[j] != '\0')
 		{
-			if (b[idx] != delim[j])
+			if (b[idx] == delim[j])
 			{
-				sub[idx] = b[idx];
-			}
-			else
-			{
-				sub[idx] = '\0';
+				b[idx] = '\0';
 
 				e = &b[idx + 1];
-				free(sub);
-				printf("2");
-				return (sub);
+				return (b);
 			}
 			j++;
 		}
 		idx++;
 	}
+	if ((b[idx - 1] == ' ' || b[idx - 1] == '\n')  && b[idx] == '\0')
+	{
+		return (NULL);
+	}
+	if (b[idx] == '\0')
+	{
+		e = &b[idx];
+		return (b);
+	}
 	return (NULL);
 }
+/*
+
+int main(void)
+{
+	char *str, *something;
+	const char delim[] = {' ', '\0'};
+	if(!(str = malloc(sizeof(char) * 1024)))
+		return;
+	str = strdup("ls  \n");
+
+	something = _strtok(str, delim);
+	while (something)
+	{
+		printf("%s\n", something);
+		something = _strtok(NULL,delim);
+	}
+	return (0);
+}
+*/

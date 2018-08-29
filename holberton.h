@@ -1,6 +1,5 @@
 #ifndef HOLBERTON_H
 #define HOLBERTON_H
-#define _GNU_SOURCE
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -86,5 +85,7 @@ char *_getenv(struct shell cash);
 void direct_path(struct shell cash);
 
 char *_strtok(char *str, const char *delim);
+
+unsigned int _strspn(char *s, char *accept);
 
 #endif /*HOLBERTON_H*/
