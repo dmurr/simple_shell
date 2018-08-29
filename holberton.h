@@ -1,5 +1,6 @@
 #ifndef HOLBERTON_H
 #define HOLBERTON_H
+#define _GNU_SOURCE
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -59,6 +60,10 @@ int _strcmp(char *s1, char *s2);
 char *_strcat(char *dest, char *src);
 
 char *int_arg(int input);
+
+void *_calloc(unsigned int nmemb, unsigned int size);
+
+void *memeset(void *a, int c, int size);
 
 int input_get(struct shell cash);
 

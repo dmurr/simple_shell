@@ -11,11 +11,10 @@
  * Return: An array of character string arguments in parsed_input.
  */
 
-/* VERSION 0.1 Only parses on ' '*/
 int input_parse(struct shell cash)
 {
 	char *p_holder, delim[] = {' ', '\0'}, new[] = {'\n', '\0'};
-	int j = 0;
+	int j = 0, i = 0;
 
 	p_holder = _strtok(cash.i_buf, delim);
 
@@ -25,8 +24,16 @@ int input_parse(struct shell cash)
 		p_holder = _strtok(NULL, delim);
 		j++;
 	}
-	/* check for newline at [j - 1] */
-	(cash.p_buf)[j - 1] = _strtok((cash.p_buf)[j - 1], new);
+	for ( ; (cash.p_buf)[j - 1][i] != '\0' ; i++)
+	{
+		cash.exit = 2;
+		if ((cash.p_buf)[j - 1][i] == '\n')
+		{
+			(cash.p_buf)[j - 1] = _strtok((cash.p_buf)[j - 1], new);
+			cash.exit = 0;
+			break;
+		}
+	}
 	(cash.p_buf)[j] = p_holder;
 	return (0);
 }

@@ -41,7 +41,7 @@ int main(int argc __attribute__((unused)), char *argv[], char **env)
 	{
 		cash.count += 1;
 		write(0, prompt, 7);
-		cash.exit = input_get(cash);
+		input_get(cash);
 		if (cash.exit == 1)
 			break;
 		input_exec(cash)(cash);

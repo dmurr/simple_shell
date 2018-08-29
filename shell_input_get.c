@@ -16,7 +16,10 @@ int input_get(struct shell cash)
 	size_t size = CHAR_BUF_MAX;
 
 	if (getline(&(cash.i_buf), &size, stdin) == -1)
-		return (1);
+	{
+		cash.exit = 1;
+		return (0);
+	}
 	input_parse(cash);
 	return (0);
 }
