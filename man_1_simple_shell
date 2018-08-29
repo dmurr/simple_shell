@@ -1,0 +1,48 @@
+.TH CASH 1 "2018 Aug 29" "1.0" "Holberton's simple_shell Manual"
+.SH NAME
+\fBcash\fR \- basic UNIX shell (Crazy Awesome SHell)
+.SH SYNOPSIS
+
+\fB./cash\fR \fIno_options_available\fR
+
+.SH DESCRIPTION
+
+\fBcash\fR is a custom command interpreter for the system.  The current version
+of \fBcash\fR acts only as an interactive command line interpreter and does not
+handle invocation with arguments.
+
+\fBInvocation\fR
+
+.br
+.\&
+\&$ ./cash
+
+A prompt will appear which the user can use to enter and executes commands.
+
+
+.SH FEATURES
+
+\fBAccepts piped input\fR maybe.
+
+.SH BUILT-INS
+
+.TP
+\fBenv\fR
+
+Prints the environment.  No arguments are currently accepted.
+
+.TP
+\fBexit\fR [\fIexit_status\fR]
+
+Exits the shell with an exit status of an int between 0 and 255.
+
+.SH EXAMPLES
+
+EXAMPLES GO HERE
+
+.SH SEE ALSO
+sh(1), csh(1), ksh(1), dash(1), bash(1)
+
+
+.SH AUTHORS
+Diego Murray, Cameron Eng
