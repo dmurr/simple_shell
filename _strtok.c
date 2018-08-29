@@ -11,7 +11,7 @@
  */
 char *_strtok(char *str, const char *delim)
 {
-	char *b = NULL;
+	char *b;
 	static char *e;
 	int idx = 0;
 	int j;
@@ -42,33 +42,23 @@ char *_strtok(char *str, const char *delim)
 		}
 		idx++;
 	}
-	if ((b[idx - 1] == ' ' || b[idx - 1] == '\n')  && b[idx] == '\0')
-	{
-		return (NULL);
-	}
 	if (b[idx] == '\0')
 	{
+		if (idx >= 0)
+		{
+			if (b[idx - 1] == ' ')
+				return (NULL);
+			else if (b[idx - 1] == '\n')
+			{
+				if (idx >= 1)
+				{
+					if (b[idx - 2] == ' ')
+						return (NULL);
+				}
+			}
+		}
 		e = &b[idx];
 		return (b);
 	}
 	return (NULL);
 }
-/*
-
-int main(void)
-{
-	char *str, *something;
-	const char delim[] = {' ', '\0'};
-	if(!(str = malloc(sizeof(char) * 1024)))
-		return;
-	str = strdup("ls  \n");
-
-	something = _strtok(str, delim);
-	while (something)
-	{
-		printf("%s\n", something);
-		something = _strtok(NULL,delim);
-	}
-	return (0);
-}
-*/

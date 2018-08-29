@@ -15,9 +15,8 @@ void process_rel_path(struct shell cash)
 	abs_path = malloc(sizeof(char) * 1024);
 	if (!abs_path)
 		return;
-
-	full_path = _getenv(cash);
-
+	full_path = malloc(sizeof(char) * 1024);
+	_strcpy(full_path, _getenv(cash));
 	path = _strtok(full_path, delim);
 	while (path)
 	{
@@ -41,13 +40,25 @@ void process_rel_path(struct shell cash)
 				cash.exec = 1;
 				cash.rel = abs_path;
 				shell_exec(cash);
+				free(abs_path);
+				free(full_path);
 				return;
 			}
 		}
+		printf("%s\n", path);
 		path = _strtok(NULL, delim);
 	}
 	if (found == 0)
+	{
+		printf("%s\n", abs_path);
+		printf("err1\n");
 		shell_error(cash, 1);
+	}
 	else if (found == 1)
+	{
+		printf("err3\n");
 		shell_error(cash, 3);
+	}
+	free(full_path);
+	free(abs_path);
 }

@@ -112,7 +112,7 @@ char *int_arg(int input)
  * Return: number of consecutive bytes of s which consist of bytes of accept
  */
 
-unsigned int _strspn(char *s, char *accept)
+unsigned int _strspn(char *s, const char *accept)
 {
 	int i, j;
 	unsigned int bytes = 0;

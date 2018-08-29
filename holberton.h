@@ -1,5 +1,6 @@
 #ifndef HOLBERTON_H
 #define HOLBERTON_H
+#define _GNU_SOURCE
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -10,7 +11,6 @@
 
 #define SHELL_PROMPT "#cash$ "
 #define CHAR_BUF_MAX 1024
-#define _GNU_SOURCE
 
 /**
  * struct shell - struct for holding relevant variables related to the
@@ -64,6 +64,8 @@ void *_calloc(unsigned int nmemb, unsigned int size);
 
 void *memeset(void *a, int c, int size);
 
+char *_strcpy(char *dest, char *src);
+
 int input_get(struct shell cash);
 
 int input_parse(struct shell cash);
@@ -86,6 +88,6 @@ void direct_path(struct shell cash);
 
 char *_strtok(char *str, const char *delim);
 
-unsigned int _strspn(char *s, char *accept);
+unsigned int _strspn(char *s, const char *accept);
 
 #endif /*HOLBERTON_H*/
