@@ -10,6 +10,7 @@
 
 #define SHELL_PROMPT "#cash$ "
 #define CHAR_BUF_MAX 1024
+#define _GNU_SOURCE
 
 /**
  * struct shell - struct for holding relevant variables related to the
