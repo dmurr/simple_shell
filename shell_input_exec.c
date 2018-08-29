@@ -13,13 +13,20 @@ void shell_exec(struct shell cash)
 	pid_t c_id;
 	int status;
 
+/* below code block*/
+	if (access(cash.name, X_OK) == -1)
+	{
+		shell_error(cash, 3);
+		exit(99);
+	}
+
 	c_id = fork();
 	if (c_id == -1)
 	{
 		perror("Error:");
 		exit(1);
 	}
-	else if (c_id == 0)
+	else if (c_id == 0 && cash.exec == 0)
 	{
 		if (execve((cash.p_buf)[0], cash.p_buf, NULL) == -1)
 		{
@@ -29,12 +36,23 @@ void shell_exec(struct shell cash)
 			exit(1);
 		}
 	}
+	else if (c_id == 0 && cash.exec == 1)
+	{
+		if (execve(cash.rel, cash.p_buf, NULL) == -1)
+		{
+			shell_error(cash, 1);
+			free(cash.i_buf);
+			free(cash.p_buf);
+			exit(1);
+		}
+	}
 	else
-	wait(&status);
+		wait(&status);
 }
 
 /**
  * shell_env - prints environment
+ * @cash: Shell variable struct
  *
  * Return: void
  */
@@ -108,7 +126,7 @@ void (*input_exec(struct shell cash))(struct shell)
 	exec array[] = {
 		{"exit", shell_exit},
 		{"env", shell_env},
-		{NULL, shell_exec}
+		{NULL, direct_path}
 	};
 	int i = 0;
 
@@ -116,5 +134,5 @@ void (*input_exec(struct shell cash))(struct shell)
 	{
 		i++;
 	}
-	return(array[i].fun);
+	return (array[i].fun);
 }

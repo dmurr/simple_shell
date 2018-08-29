@@ -10,6 +10,7 @@
 
 #define SHELL_PROMPT "#cash$ "
 #define CHAR_BUF_MAX 1024
+#define _GNU_SOURCE
 
 /**
  * struct shell - struct for holding relevant variables related to the
@@ -17,8 +18,10 @@
  *
  * @i_buf: input buffer for shell input
  * @p_buf: parsed string array for parsed input
- * @_env: parsed string array for environment variables
+ * @env: parsed string array for environment variables
  * @name: argv[0] value for each shell call
+ * @rel: stores absolute path when found for relative arguments
+ * @exec: if executable is found
  * @count: counter of number of loops shell main has initiated
  * @exit: used to trigger exit conditions
  */
@@ -29,6 +32,8 @@ typedef struct shell
 	char **p_buf;
 	char **env;
 	char *name;
+	char *rel;
+	int exec;
 	int count;
 	int exit;
 } shell;
@@ -72,5 +77,13 @@ void shell_exit(struct shell cash);
 void shell_env(struct shell cash);
 
 void shell_error(struct shell cash, int error);
+
+void process_rel_path(struct shell cash);
+
+char *_getenv(struct shell cash);
+
+void direct_path(struct shell cash);
+
+char *_strtok(char *str, const char *delim);
 
 #endif /*HOLBERTON_H*/
