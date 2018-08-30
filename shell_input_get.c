@@ -13,13 +13,18 @@
 
 int input_get(struct shell cash)
 {
+	char new[] = {'\n', '\0'};
 	size_t size = CHAR_BUF_MAX;
+	ssize_t bytes, ret = 0;
 
-	if (getline(&(cash.i_buf), &size, stdin) == -1)
+	bytes = getline(&(cash.i_buf), &size, stdin);
+
+	if (bytes == -1 || bytes == 0)
 	{
-		cash.exit = 1;
-		return (0);
+		write(1, new, 2);
+		shell_exit(cash);
+		return (1);
 	}
-	input_parse(cash);
-	return (0);
+	ret = input_parse(cash);
+	return (ret);
 }

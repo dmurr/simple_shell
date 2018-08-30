@@ -56,6 +56,7 @@ char *_strtok(char *str, const char *delim)
 						return (NULL);
 				}
 			}
+
 		}
 		e = &b[idx];
 		return (b);

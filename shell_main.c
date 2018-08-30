@@ -27,29 +27,30 @@ int main(int argc __attribute__((unused)), char *argv[], char **env)
 		0, /* count */
 		0 /* exit */
 	};
-	char *prompt = SHELL_PROMPT;
+	char *prompt = SHELL_PROMPT, new[] = {'\n', '\0'};
 
 	cash.name = argv[0];
 	cash.env = env;
-	cash.i_buf = malloc(sizeof(char) * CHAR_BUF_MAX);
+	cash.i_buf = _calloc(CHAR_BUF_MAX, sizeof(char));
 	if (!cash.i_buf)
 		return (-1);
-	cash.p_buf = malloc(sizeof(void *) * 20);
+	cash.p_buf = _calloc(20, sizeof(void *));
 	if (!cash.p_buf)
 		return (-1);
 	while (1)
 	{
 		cash.count += 1;
 		write(0, prompt, 7);
-		input_get(cash);
-		if (cash.exit == 1)
-			break;
+		cash.exit = input_get(cash);
 		input_exec(cash)(cash);
 		if (cash.exit == 2)
+		{
 			break;
+		}
 	}
 	free(cash.i_buf);
 	free(cash.p_buf);
-	printf("\n");
+	write(0, prompt, 7);
+	write(0, new, 1);
 	return (0);
 }

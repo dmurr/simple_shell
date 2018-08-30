@@ -14,7 +14,7 @@
 int input_parse(struct shell cash)
 {
 	char *p_holder, delim[] = {' ', '\0'}, new[] = {'\n', '\0'};
-	int j = 0, i = 0;
+	int j = 0, i = 0, ret = 0;
 
 	p_holder = _strtok(cash.i_buf, delim);
 
@@ -26,14 +26,15 @@ int input_parse(struct shell cash)
 	}
 	for ( ; (cash.p_buf)[j - 1][i] != '\0' ; i++)
 	{
-		cash.exit = 2;
+		ret = 2;
 		if ((cash.p_buf)[j - 1][i] == '\n')
 		{
 			(cash.p_buf)[j - 1] = _strtok((cash.p_buf)[j - 1], new);
-			cash.exit = 0;
+			ret = 0;
 			break;
 		}
+
 	}
 	(cash.p_buf)[j] = p_holder;
-	return (0);
+	return (ret);
 }

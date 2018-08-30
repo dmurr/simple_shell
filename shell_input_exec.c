@@ -13,7 +13,6 @@ void shell_exec(struct shell cash)
 	pid_t c_id;
 	int status;
 
-/* below code block*/
 	if (access(cash.name, X_OK) == -1)
 	{
 		shell_error(cash, 3);
