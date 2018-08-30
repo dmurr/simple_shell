@@ -47,6 +47,8 @@ int main(int argc __attribute__((unused)), char *argv[], char **env)
 		{
 			break;
 		}
+		if (!isatty(0))
+			break;
 	}
 	free(cash.i_buf);
 	free(cash.p_buf);
